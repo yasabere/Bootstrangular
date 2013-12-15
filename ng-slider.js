@@ -14,7 +14,7 @@ ngSlider.directive('ngSlider', function(){
       'tooltip':'=tooltip',
       'handle':'=handle',
       'formater':'=formater',
-      'model':'&model'
+      'model':'=ngModel'
     },
     link:function(scope, element, attrs, tabsCtrl) {
       var options = {
@@ -26,16 +26,24 @@ ngSlider.directive('ngSlider', function(){
         selection:scope.selection,
         tooltip:scope.tooltip,
         handle:scope.handle,
-        formater:scope.formater,
-        model:scope.model,
+        formater:scope.formater
       }
+
+      console.log(attrs);
+
       $(element[0].childNodes[0]).slider(options);
+
+      $(element[0].childNodes[0]).on('slide', function(ev) {
+          console.log(ev.value);
+          scope.$apply(function() {
+            scope.model = ev.value;
+          });
+        });
     },
     template:'<input type="text" class="slider" >'
 
   };
 });
-
 /*
 Written by Yaw Asabere
 */
